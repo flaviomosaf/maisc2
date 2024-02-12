@@ -1,0 +1,74 @@
+{
+    "message": {
+        "entities": {
+            "ents_kind": [],
+            "ents_posi": [],
+            "ents_text": []
+        },
+        "grammar": {
+            "concept": {
+                "lst_adje": [],
+                "lst_adve": [],
+                "lst_conj": [],
+                "lst_det": [],
+                "lst_noun": [
+                    "tiros"
+                ],
+                "lst_num": [
+                    "1.000"
+                ],
+                "lst_other": [
+                    "foram"
+                ],
+                "lst_pron": [],
+                "lst_punc": [
+                    "."
+                ],
+                "lst_verb": [
+                    "ouvidos"
+                ]
+            },
+            "count": {
+                "tot_adej": "0",
+                "tot_adve": "0",
+                "tot_conj": "0",
+                "tot_det": "0",
+                "tot_noun": "1",
+                "tot_num": "1",
+                "tot_other": "1",
+                "tot_pron": "0",
+                "tot_punc": "1",
+                "tot_verb": "1"
+            }
+        },
+        "main": {
+            "message_raw": "1.000 tiros foram ouvidos.",
+            "message_with_ents": "1.000 tiros foram ouvidos . "
+        },
+        "priority": {
+            "status": false
+        },
+        "properties": {
+            "date": "07/02/2024",
+            "finish_processing": "1726.873772114",
+            "host_receiver": "comp-flavio-ferreira",
+            "host_sender": "comp-flavio-ferreira",
+            "ip_receiver": "192.168.91.62",
+            "ip_sender": "192.168.91.62",
+            "start_processing": "1722.917266554",
+            "time_processing": "3.95651",
+            "tokens": [
+                "1.000",
+                "tiros",
+                "foram",
+                "ouvidos",
+                "."
+            ],
+            "tokens_len": "5"
+        },
+        "sentence": {
+            "len_sent": 1,
+            "lst_sent": "[1.000 tiros foram ouvidos.]"
+        }
+    }
+}

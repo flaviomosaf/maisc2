@@ -1,0 +1,92 @@
+{% load static %}
+<section class="blog-post-list py-5 pl-5 bg-transparent">
+  {% include 'core/config/message/message.html' %}  
+  <div class="container bg-transparent mt-4">
+    <h5 class="fw-bold py-2 text-dark ">
+      > Messages
+    </h5>
+    <div class="row align-items-top">      
+      <div class="col-md-5 align-top d-flex justify-content-center bg-transparent pt-4 pl-1">
+        {% include 'sendc2/form/form.html' %}
+      </div>
+      <div class="col-md-6 pl-3 pb-5 pt-4">
+        <div class="row bg-secondary text-white pl-2 fw-bold fs-6" >
+          Output:
+        </div>
+        <div class="row bg-dark h-100 pl-2 pt-3 pb-0">
+            <div class="col">
+              {% if context %}
+
+                <!-- Sender Agent -->
+                  <div class="row text-white">
+                    <div class="col-2" style="color:rgba(224, 217, 217, 0.979)">Sender:</div>
+                    <div class="col-4" style="color:rgba(224, 217, 217, 0.979)">{{ sender }}</div>     
+                    <div class="col-2" style="color:rgba(224, 217, 217, 0.979)">Receiver:</div>
+                    <div class="col-4" style="color:rgba(224, 217, 217, 0.979)">{{ receiver }}</div>
+                  </div>       
+
+                <!-- Raw Message -->
+                <div class="row mt-3">
+                  <div class="col-2 bg-transparent" style="color:rgba(224, 217, 217, 0.979)">Raw Msg : </div>
+                    <div class="col" style="color:rgba(224, 217, 217, 0.979)">
+                      {{ sent_message }}
+                    </div>
+                </div>
+
+                <!-- New Message -->
+                <div class="row mt-3 pt-2 pb-2">
+                  <div class="col-2 bg-transparent" style="color:rgba(224, 217, 217, 0.979)">New Msg : </div>
+                    {% if context.message_priority %}
+                        <div class="col border border-3 border-warning mr-3 pl-2 pt-2 pb-2 " style="color:rgb(5, 242, 250)">
+                            {% for item in context.dict_message_ents.items %}
+                                <mark class="pt-0 pb-0 mb-4 mt-4" style="background-color: {{ item.1.bgcolor }}; color: {{item.1.color}}">{{ item.1.value }}</mark>
+                            {% endfor %}                          
+                        </div>
+                    {% else %}
+                        <div class="col pl-2" style="color:rgb(5, 242, 250)">                          
+                          {% for item in context.dict_message_ents.items %}
+                              <mark class="pt-0 pb-0" style="background-color: {{ item.1.bgcolor }}; color: {{item.1.color}};">{{ item.1.value }}</mark>
+                          {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- time processing -->
+                <div class="row mt-3">
+                  <div class="col-2 bg-transparent" style="color:rgba(224, 217, 217, 0.979)">Time: </div>
+                    <div class="col font-italic small " style="color:rgba(224, 217, 217, 0.979)">
+                      {{ context.time_processing }} ms
+                    </div>
+                </div>   
+
+                <!-- Download  -->
+                <div class="row mt-3">
+                  <div class="col-2 pr-0" style="color:rgba(224, 217, 217, 0.979)"><small>JSON:</small> </div>
+                    <div class="col font-italic small text-white" style="color:rgba(224, 217, 217, 0.979)">
+                      <a href="{% static 'download/data_message_json.json' %}" target="_blank" 
+                      class="d-inline-flex align-items-center justify-content-center btn-danger border text-white p-2" title="Download message like JSON">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-2" viewBox="0 0 16 16">
+                          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>    
+                       Visualizar Dados          
+                      </a>                    
+                    </div>
+                </div> 
+
+              {% endif %}                                                                               
+            </div>
+        </div>
+
+        <div class="row small text-white pt-1 pb-1 pl-2" style="background-color: rgb(58, 66, 75)">
+          <small>
+            ACTION <font color="cyan">[ACT]</font> - AGENT <font color="cyan">[AGT]</font> -
+            VEHICLE <font color="cyan">[VHC]</font> - PLACE <font color="cyan">[PLC]</font> -
+            WEAPONS <font color="cyan">[WEP]</font> - UNIT <font color="cyan">[UNT]</font> - 
+            DIRECTION <font color="cyan">[DRT]</font>.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+{% extends 'core/config/base/base.html' %}
+{% load static %}
+{% block title %} {{ title_sheet }} {% endblock %}
+
+{% block content %}
+
+    <div class="row align-items-center bg-transparent pt-3">
+               
+        {% include 'core/content/about/about.html' %}
+
+        {% include 'microservice/home/home.html' %}
+
+        {% include 'hierarchy/home/home.html' %}
+
+        {% include 'core/config/footer/home/home.html' %}
+
+    </div>
+
+{% endblock %}

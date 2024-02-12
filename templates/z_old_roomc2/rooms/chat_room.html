@@ -1,0 +1,388 @@
+{% extends 'core/config/base/base.html' %}
+{% load static %}
+{% block title %} MAISC2 - Chat {% endblock %}
+
+{% block content %}
+
+<section class="py-3 border-bottom">
+    <div class="back-container container-fluid">
+        <div class="container-fluid front-container">
+            <div class="back-top"></div>
+            <div class="back-main"></div>
+        </div>
+
+        <div class="container front-container1 mt-5">
+            <!-- FIRST ROOM -->
+            <div class="row">
+                <div class="row chat-top bg-danger">
+                    <div class="col-sm-4 border-right border-secondary pt-2">
+                        {% if user.profile.photo %} 
+                            <img class="img-profile rounded-circle " src="{{ user.profile.photo.url }}" style="width:30px; height:30px;">   
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                            </svg>
+                        {% endif %}
+                        <span class="ml-2 bdget bg-{{user_current.profile.collor}} pl-2 pr-2 mt-4 fw-bold
+                        {% if user.profile.collor|stringformat:'s' == 'warning' or not user.profile.collor %} text-dark {% else %} text-white {% endif %}">
+                            {{ user.username }}
+                        </span>
+                        <span class="float-right mt-2">
+                            <div class="notification">
+                                <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                <span class="badge" id="count_badge"></span>
+                            </div>
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-left-fill mx-3"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                            </svg>
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical mr-2"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col mt-2"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots mt-1 me-2" viewBox="0 0 16 16">
+                                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                    <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                                </svg>
+                                <span class="bg-transparent mt-3">sala - {{ room_one }}</span>
+                            </div>
+                            <div class="col mt-1">
+                                <span class="float-right mt-2">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
+                                        <path fill-rule="evenodd"
+                                            d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+                                    </svg>
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical mx-3"
+                                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 contacts">
+                        <div class="contact-table-scroll">
+                            <table class="table table-hover">
+                                <tbody>
+                                    {% for xt in dict_room_user %}
+                                        <tr>
+                                            {% if xt.room|stringformat:"s" == room.room|stringformat:"s" %}
+                                                <td class="bg-transparent col-1 pr-0 mr-0 pt-2">                                         
+                                                    <span class="position-absolute top-50 start-50 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                                        <span class="visually-hidden">New alerts</span>
+                                                    </span>
+                                                </td>
+                                                <td class="">
+                                                    <a class="text-secondary" style="text-decoration: none;" href="{% url 'room:room_one' xt.room|lower %}">
+                                                        <span class="badge alert-danger text-dark">sala {{ xt.room|lower }} </span>
+                                                    </a>
+                                                </td>
+                                            {% else %}
+                                                <td class="bg-transparent col-1 pr-0 mr-0 pt-2">                                       
+                                                    <span class="position-absolute top-50 start-50 translate-middle p-2 bg-secondary border border-light rounded-circle">
+                                                        <span class="visually-hidden">New alerts</span>
+                                                    </span>
+                                                </td>
+                                                <td class="">
+                                                    <a class="text-secondary" style="text-decoration: none;" href="{% url 'room:room_one' xt.room|lower %}">
+                                                        <span class="badge alert-secondary text-dark">sala {{ xt.room|lower }} </span>
+                                                    </a>
+                                                </td>                                                                                   
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 message-area" style="background-color:#DED5CC;">
+                        <div class="message-table-scroll pt-2 pb-3" id="chat-messages">
+                            {% for m in messages_room %}
+                                <div class="row mb-3 pb-0 bg-transparent">
+                                    <div class="col-1 bg-transparent pr-1 pt-1 d-flex justify-content-end align-end">
+                                        {% if m.user.profile.photo %} 
+                                            <img class="img-profile rounded-circle " src="{{ m.user.profile.photo.url }}" style="width:30px; height:30px;">   
+                                        {% else %}
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                            </svg>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-8 pb-0 pl-1">
+                                        <div class="alert alert-light pb-0 mb-0 pt-0 pl-1" role="alert">
+                                            <div class="row small pt-1 pl-1" style="font-size: smaller; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+                                                <div class="col-1 text-{{m.user.profile.collor}} fw-bold">{{ m.user|upper }} </div>
+                                                <div class="col pl-4 small">[{{ m.created|date:"Y-m-d"}} às {{ m.created|date:"H:i:s" }}]</div>
+                                            </div>
+                                            <div class="row pl-3 fw-light small">
+                                                {{ m.content }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3"></div>                              
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row message-box p-3 bg-ligth">
+                            <div class="col-10 bg-transparent pl-0 pr-0">
+                                <input type="text" class="form-control" id="chat-message-input" placeholder="Write your message here...">
+                            </div>
+                            <div class="col bg-transparent">
+                                <button type="submit" class="btn btn-light" id="chat-message-submit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send me-2" viewBox="0 0 16 16">
+                                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                                    </svg>
+                                    Send
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECOND ROOM -->
+            {% if num_rooms %}
+                <div class="row">
+                    <div class="row chat-top bg-primary">
+                        <div class="col-sm-4 border-right border-secondary pt-2">
+                            {% if user.profile.photo %} 
+                                <img class="img-profile rounded-circle " src="{{ user.profile.photo.url }}" style="width:30px; height:30px;">   
+                            {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                </svg>
+                            {% endif %}
+                            <span class="ml-2 bdget bg-{{user_current.profile.collor}} pl-2 pr-2 mt-4 fw-bold
+                            {% if user.profile.collor|stringformat:'s' == 'warning' or not user.profile.collor %} text-dark {% else %} text-white {% endif %}">
+                                {{ user.username }}
+                            </span>
+                            <span class="float-right mt-2">
+                                <div class="notification">
+                                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                    <span class="badge" id="count_badge"></span>
+                                </div>
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-left-fill mx-3"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                </svg>
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical mr-2"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col mt-2"> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots mt-1 me-2" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                        <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                                    </svg>
+                                    <span class="bg-transparent mt-3">sala - {{ room_two }}</span>
+                                </div>
+                                <div class="col mt-1">
+                                    <span class="float-right mt-2">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
+                                            <path fill-rule="evenodd"
+                                                d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+                                        </svg>
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical mx-3"
+                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 contacts">
+                            <div class="contact-table-scroll">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        {% for xt in dict_room_user %}
+                                            <tr>
+                                                {% if xt.room|stringformat:"s" == room.room|stringformat:"s" %}
+                                                    <td class="bg-transparent col-1 pr-0 mr-0 pt-2">                                         
+                                                        <span class="position-absolute top-50 start-50 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                                            <span class="visually-hidden">New alerts</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="">
+                                                        <a class="text-secondary" style="text-decoration: none;" href="{% url 'room:room_one' xt.room|lower %}">
+                                                            <span class="badge alert-danger text-dark">sala {{ xt.room|lower }} </span>
+                                                        </a>
+                                                    </td>
+                                                {% else %}
+                                                    <td class="bg-transparent col-1 pr-0 mr-0 pt-2">                                       
+                                                        <span class="position-absolute top-50 start-50 translate-middle p-2 bg-secondary border border-light rounded-circle">
+                                                            <span class="visually-hidden">New alerts</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="">
+                                                        <a class="text-secondary" style="text-decoration: none;" href="{% url 'room:room_one' xt.room|lower %}">
+                                                            <span class="badge alert-secondary text-dark">sala {{ xt.room|lower }} </span>
+                                                        </a>
+                                                    </td>                                                                                   
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-sm-8 message-area" style="background-color:#DED5CC;">
+                            <div class="message-table-scroll pt-2 pb-3" id="chat-messages">
+                                {% for m in messages_room %}
+                                    <div class="row mb-3 pb-0 bg-transparent">
+                                        <div class="col-1 bg-transparent pr-1 pt-1 d-flex justify-content-end align-end">
+                                            {% if m.user.profile.photo %} 
+                                                <img class="img-profile rounded-circle " src="{{ m.user.profile.photo.url }}" style="width:30px; height:30px;">   
+                                            {% else %}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                </svg>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-8 pb-0 pl-1">
+                                            <div class="alert alert-light pb-0 mb-0 pt-0 pl-1" role="alert">
+                                                <div class="row small pt-1 pl-1" style="font-size: smaller; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+                                                    <div class="col-1 text-{{m.user.profile.collor}} fw-bold">{{ m.user|upper }} </div>
+                                                    <div class="col pl-4 small">[{{ m.created|date:"Y-m-d"}} às {{ m.created|date:"H:i:s" }}]</div>
+                                                </div>
+                                                <div class="row pl-3 fw-light small">
+                                                    {{ m.content }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3"></div>                              
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row message-box p-3 bg-ligth">
+                                <div class="col-10 bg-transparent pl-0 pr-0">
+                                    <input type="text" class="form-control" id="chat-message-input" placeholder="Write your message here...">
+                                </div>
+                                <div class="col bg-transparent">
+                                    <button type="submit" class="btn btn-light" id="chat-message-submit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send me-2" viewBox="0 0 16 16">
+                                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                                        </svg>
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block scripts %}
+{{ room.slug|json_script:"json-roomname" }}
+{{ request.user.username|json_script:"json-username" }}
+
+<script>
+    const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+    const userName = JSON.parse(document.getElementById('json-username').textContent);
+    const chatSocket = new WebSocket('ws://'+window.location.host+'/ws/'+roomName+'/');
+
+    // const io = require('socket.io')(server,{
+    //     pingtimeout:60000,
+    // });
+
+    chatSocket.onclose = function(e) {
+        console.log('onclose')
+    }
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+
+        if (data.message) {
+            document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+        } else {
+            alert('The message was empty!')
+        }
+
+        scrollToBottom();
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        e.preventDefault()
+
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+
+        console.log({
+            'message': message,
+            'username': userName,
+            'room': roomName
+        })
+
+        chatSocket.send(JSON.stringify({'message':message,'username':userName,'room':roomName}));
+
+        messageInputDom.value = '';
+
+        return false
+    };
+
+    /**
+    * A function for finding the messages element, and scroll to the bottom of it.
+    */
+    function scrollToBottom() {
+        let objDiv = document.getElementById("chat-messages");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    // Add this below the function to trigger the scroll on load.
+    scrollToBottom();
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+<!-- <div class="row align-items-center alert-light pt-5">
+    <div class="row mt-5 mb-5">
+        <div class="col-3"></div>
+        <div class="col text-white text-center fs-1 bg-danger p-5 mt-5 mb-5">"{{ message }}"</div>
+        <div class="col-3"></div>
+    </div>    
+</div> -->

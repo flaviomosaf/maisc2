@@ -1,0 +1,584 @@
+{% extends 'core/config/base/base.html' %}
+{% load static %}
+{% block title %} {{ title_sheet }} {% endblock %}
+
+{% block content %}
+
+<section class="py-3 border-bottom mt-5">
+    <div class="back-container container-fluid">
+        <div class="container-fluid front-container">
+            <div class="back-top"></div>
+            <div class="back-main"></div>
+        </div>
+            <div class="row d-flex justify-content-center m-0 p-0">
+                <div class="{% if second_room  %} col-6 {% else %} col-8 {% endif %} mt-4">
+                    <!-- FIRST ROOM -->
+                    <div class="row chat-top" style="background-color:#9cbfdd">
+                        <div class="col-sm-3 border-right border-secondary pt-2 cursor-pointer"  data-bs-toggle="modal" data-bs-target="#edit_user" 
+                        title="NOME: {{ user.first_name}}&#10LOGIN: {{user.username}}&#10EMAIL: {{user.email}}&#10JOIN: {{user.date_joined}} ">
+                            {% if user.profile.photo %} 
+                                <img class="img-profile rounded-circle" src="{{ user.profile.photo.url }}" style="width:40px; height:40px;">   
+                            {% else %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                </svg>
+                            {% endif %}
+                            <span class="ml-0 bdget bg-transparent bg-{{user_current.profile.collor}} pl-1 pr-2 mt-5 fw-bold text-dark">
+                                {{ user.username }}
+                            </span>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-8 pt-2"> 
+                                    <span class="mt-1 bg-transparent bg-{{user_current.profile.collor}} pl-0 pr-2 fw-bold pb-0"> 
+                                        Room: {{ first_room }} 
+                                    </span>
+                                    <p class="pb-1 mb-0 small">
+                                        <small class="small fw-normal">
+                                            {% for each_room_user in rooms_user %}  
+                                                {% if each_room_user.slug|stringformat:"s" ==  first_room|stringformat:"s" %} 
+                                                    {{ each_room_user.written_by }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </small>
+                                    </p>
+                                </div>
+                                <div class="col mt-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 contacts">
+                            <div class="contact-table-scroll">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>                                                  
+                                            {% if room.slug|stringformat:"s" == first_room|stringformat:"s" %}
+                                                <td class="bg-transparent col-1 pr-0 mr-0 pt-2">             
+                                                    <span class="badge alert-success text-success border border-success">ON</span>
+                                                </td> 
+                                                <td class="bg-transparent col-8 pr-0 mr-0 pt-2">                                    
+                                                    <span class="badge alert-success text-success border border-success">Room {{ first_room }}</span>
+                                                </td> 
+                                            {% else %}   
+                                                <td class="bg-transparent col-1 pr-0 mr-0 pt-2">       
+                                                    <a style="text-decoration: none;" href="{% url 'room:room_chat' first_room|lower %}">             
+                                                    <span class="badge alert-secondary text-secondary border border-secondary">OFF</span>
+                                                    </a>
+                                                </td> 
+                                                <td class="bg-transparent col-8 pr-0 mr-0 pt-2">     
+                                                    <a style="text-decoration: none;" href="{% url 'room:room_chat' first_room|lower %}">                                      
+                                                    <span class="badge alert-secondary text-secondary border border-secondary">Activated Now</span>
+                                                    </a>
+                                                </td>                                                          
+                                            {% endif %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                {% for k, v in dic.items %}{% for k1, v1 in v.items %}
+                                    <mark style="color: {{ v1.color }}; background-color: {{ v1.bgcolor }};">{{ v1.term }}</mark><br>
+                                {% endfor %}{% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-sm-9 message-area" style="background-color:#DED5CC;">
+                            <div class="message-table-scroll pt-2 pb-3" id="chat-messages-one">
+                                {% for m in messages_room_first %}
+                                    <div class="row mb-3 pb-0 bg-transparent">
+                                        <div class="col-1 bg-transparent pr-1 pt-1 d-flex justify-content-end align-end">
+                                            {% if m.user.profile.photo %} 
+                                                <img class="img-profile rounded-circle " src="{{ m.user.profile.photo.url }}" style="width:30px; height:30px;">   
+                                            {% else %}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                </svg>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-10 pb-0 pl-1">
+                                            <div class="alert alert-light pb-0 mb-0 pt-0 pl-1" role="alert">
+                                                <div class="row small pt-1 pl-1" style="font-size: smaller; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+                                                    <div class="col-1 text-{{m.user.profile.collor}} fw-bold mr-3">{{ m.user|upper }} </div>
+                                                    <div class="col pl-4 small">[{{ m.created|date:"Y-m-d"}} às {{ m.created|date:"H:i:s" }}]</div>
+                                                </div>
+                                                <div class="row pl-1 fw-light small">
+                                                    <span class="mb-1 ">
+                                                        {% if '[ACT]' in m.content %}
+                                                            <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                        {% elif '[AGT]' in m.content %}
+                                                            <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                        {% elif '[DRT]' in m.content %}
+                                                            <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                        {% elif '[PLC]' in m.content %}
+                                                            <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                        {% elif '[VHC]' in m.content %}
+                                                            <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                        {% elif '[UNT]' in m.content %}
+                                                            <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                        {% elif '[WEP]' in m.content %}
+                                                            <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                        {% else %}
+                                                            <mark class="bg-transparent pl-0 pr-1">{{ m.content }}</mark>
+                                                        {% endif %}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3"></div>                              
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <!-- FIRST ROOM -->
+                            <div class="row message-box p-3 bg-ligth d-flex justify-content-center align-items-center">
+                                <div class="col-1 bg-transparent">             
+                                    {% if room.slug|stringformat:"s" == first_room %}
+                                        {% if second_room %}
+                                            <a href="{% url 'room:room_chat' second_room|lower %}" 
+                                            class="alert alert-success p-2 btn-sm fw-bold text-success" 
+                                            role="alert" style="text-decoration: none;" title="Room activated.">
+                                                ON
+                                            </a>
+                                        {% else %}
+                                            <a href="#" 
+                                            class="alert alert-secondary p-2 btn-sm fw-bold text-secondary" role="alert" 
+                                            style="text-decoration: none; cursor:not-allowed;" title="Room activated.">
+                                                OFF
+                                            </a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{% url 'room:room_chat' first_room|lower %}" 
+                                        class="alert alert-secondary text-secondary p-2 btn-sm fw-bold" role="alert" 
+                                        style="text-decoration: none;" title="Click here to activated this room.">
+                                            OFF
+                                        </a>
+                                    {% endif %}
+                                </div> 
+                                <div class="col-10 bg-transparent pl-2 pr-0">
+                                    <input type="text" id="chat-message-input" 
+                                    {% if room.slug == second_room %} 
+                                        disabled class="form-control fst-italic pt-1" placeholder="Click on the button OFF to activate the room..."
+                                    {% else %} 
+                                        class="form-control pt-1 fst-italic" placeholder="write your message here..."
+                                    {% endif %}>
+                                </div>
+                                <div class="col-1 bg-transparent pl-0 pr-0 d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-light border" id="chat-message-submit"
+                                        {% if room.slug == second_room %} disabled {% endif %}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send " viewBox="0 0 16 16">
+                                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if second_room %}
+                    <div class="col-6 mt-4">
+                        <!-- SECOND ROOM -->
+                        <div class="row chat-top" style="background-color: #e24864;">
+                            <div class="col-sm-3 border-right border-secondary pt-2 cursor-pointer"  data-bs-toggle="modal" data-bs-target="#edit_user"
+                            title="NOME: {{ user.first_name}}&#10LOGIN: {{user.username}}&#10EMAIL: {{user.email}}&#10JOIN: {{user.date_joined}} ">
+                                {% if user.profile.photo %} 
+                                    <img class="img-profile rounded-circle" src="{{ user.profile.photo.url }}" style="width:40px; height:40px;">   
+                                {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                    </svg>
+                                {% endif %}
+                                <span class="ml-0 bdget bg-transparent bg-{{user_current.profile.collor}} pl-1 pr-2 mt-5 fw-bold text-dark">
+                                    {{ user.username }}
+                                </span>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-8 pt-2"> 
+                                        <span class="mt-1 bg-transparent bg-{{user_current.profile.collor}} pl-0 pr-2 fw-bold pb-0"> 
+                                            Room: {{ second_room }} 
+                                        </span>
+                                        <p class="pb-1 mb-0 small">
+                                            <small class="small fw-normal">
+                                                {% for each_room_user in rooms_user %}  
+                                                    {% if each_room_user.slug|stringformat:"s" ==  second_room|stringformat:"s" %} 
+                                                        {{ each_room_user.written_by }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </small>
+                                        </p>
+                                    </div>
+                                    <div class="col mt-1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 contacts">
+                                <div class="contact-table-scroll">
+                                    <table class="table table-hover">
+                                        <tbody>                                           
+                                            <tr>                                                  
+                                                {% if room.slug|stringformat:"s" == second_room|stringformat:"s" %}
+                                                    <td class="bg-transparent col-1 pr-0 mr-0 pt-2">             
+                                                        <span class="badge alert-success text-success border border-success">ON</span>
+                                                    </td> 
+                                                    <td class="bg-transparent col-8 pr-0 mr-0 pt-2">                                    
+                                                        <span class="badge alert-success text-success border border-success">Room {{ second_room }}</span>
+                                                    </td> 
+                                                {% else %}   
+                                                    <td class="bg-transparent col-1 pr-0 mr-0 pt-2">       
+                                                        <a style="text-decoration: none;" href="{% url 'room:room_chat' second_room|lower %}">             
+                                                        <span class="badge alert-secondary text-secondary border border-secondary">OFF</span>
+                                                        </a>
+                                                    </td> 
+                                                    <td class="bg-transparent col-8 pr-0 mr-0 pt-2">     
+                                                        <a style="text-decoration: none;" href="{% url 'room:room_chat' second_room|lower %}">                                      
+                                                        <span class="badge alert-secondary text-secondary border border-secondary">Activated Now</span>
+                                                        </a>
+                                                    </td>                                                          
+                                                {% endif %}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-9 message-area" style="background-color:#DED5CC;">
+                                <div class="message-table-scroll pt-2 pb-3" id="chat-messages-two">
+                                    {% for m in messages_room_second %}
+                                        <div class="row mb-3 pb-0 bg-transparent">
+                                            <div class="col-1 bg-transparent pr-1 pt-1 d-flex justify-content-end align-end">
+                                                {% if m.user.profile.photo %} 
+                                                    <img class="img-profile rounded-circle " src="{{ m.user.profile.photo.url }}" style="width:30px; height:30px;">   
+                                                {% else %}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                    </svg>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-10 pb-0 pl-1">
+                                                <div class="alert alert-light pb-0 mb-0 pt-0 pl-1" role="alert">
+                                                    <div class="row small pt-1 pl-1" style="font-size: smaller; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;">
+                                                        <div class="col-1 text-{{m.user.profile.collor}} fw-bold mr-2">{{ m.user|upper }} </div>
+                                                        <div class="col pl-4 small">[{{ m.created|date:"Y-m-d"}} às {{ m.created|date:"H:i:s" }}]</div>
+                                                    </div>
+                                                    <div class="row pl-1 fw-light small">                                                        
+                                                        <span class="mb-1 ">
+                                                            {% if '[ACT]' in m.content %}
+                                                                <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                            {% elif '[AGT]' in m.content %}
+                                                                <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                            {% elif '[DRT]' in m.content %}
+                                                                <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                            {% elif '[PLC]' in m.content %}
+                                                                <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                            {% elif '[VHC]' in m.content %}
+                                                                <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                            {% elif '[UNT]' in m.content %}
+                                                                <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                            {% elif '[WEP]' in m.content %}
+                                                                <mark class="alert-danger pl-0 pr-1 text-dark fw-bold">{{ m.content }}</mark>
+                                                            {% else %}
+                                                                <mark class="bg-transparent pl-0 pr-1">{{ m.content }}</mark>
+                                                            {% endif %}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3"></div>                              
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="row message-box p-3 bg-ligth d-flex justify-content-center align-items-center">
+                                    <div class="col-1 bg-transparent">             
+                                        {% if room.slug|stringformat:"s" == second_room %}
+                                            <a href="{% url 'room:room_chat' first_room|lower %}" 
+                                            class="alert alert-success p-2 btn-sm fw-bold text-success" 
+                                            role="alert" style="text-decoration: none;" title="Room activated.">
+                                                ON
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'room:room_chat' second_room|lower %}" 
+                                            class="alert alert-secondary text-secondary p-2 btn-sm fw-bold" role="alert" 
+                                            style="text-decoration: none;" title="Click here to activated this room.">
+                                                OFF
+                                            </a>
+                                        {% endif %}
+                                    </div> 
+                                    <div class="col-9 bg-transparent pl-2 pr-0">
+                                        <input type="text" id="chat-message-input-two"
+                                        {% if room.slug == first_room %} 
+                                            disabled class="form-control fst-italic" placeholder="Click on the button OFF to activate the room..."
+                                        {% else %} 
+                                            class="form-control fst-italic" placeholder="write your message here..."
+                                        {% endif %}>
+                                    </div>
+                                    <div class="col-1 bg-transparent pl-0 pr-0 d-flex justify-content-center" 
+                                    {% if room.slug == first_room %} disabled {% endif %}>
+                                        <button type="submit" class="btn btn-light border" id="chat-message-submit-two" 
+                                        {% if room.slug == first_room %} disabled {% endif %}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send " viewBox="0 0 16 16">
+                                                <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        <!--/div-->
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+{{ room.slug|json_script:"json-roomname" }}
+{{ request.user.username|json_script:"json-username" }}
+{{ user_current.profile.collor|json_script:"json-usercolor" }}
+{{ user_photo|json_script:"json-userphoto" }}
+{{ first_room|json_script:"json-firstroom" }}
+
+<script>
+    const roomName  = JSON.parse(document.getElementById('json-roomname').textContent);
+    const userName  = JSON.parse(document.getElementById('json-username').textContent);
+    const userColor = JSON.parse(document.getElementById('json-usercolor').textContent);
+    const userPhoto = '/media/'+JSON.parse(document.getElementById('json-userphoto').textContent);
+    const firstRoom = JSON.parse(document.getElementById('json-firstroom').textContent);
+    const chatSocket = new WebSocket('ws://'+window.location.host+'/ws/'+roomName+'/');
+    const user_ =  userPhoto.replace(/["]/g, '');
+
+    var currentDate = new Date();
+    var date = currentDate.getDate();
+    var month= currentDate.getMonth(); 
+    var year = currentDate.getFullYear();
+    var hour = currentDate.getHours();
+    var min  = currentDate.getMinutes();
+    var sec  = currentDate.getSeconds();
+    var number;
+    
+    function pad(n) { return n<10 ? '0'+n : n; } 
+    
+    var dateTimeMaisc2  = date + "/" + pad(month+1) + "/" + year + " às "+pad(hour)+":"+pad(min)+":"+pad(sec);
+    
+    chatSocket.onclose = function(e) {
+        console.log('onclose')
+    }
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        var message = '';
+
+        if (data.message){
+
+            message = data.message;
+
+            //let arr = [data.message]; //['flavio', 'ferreira', 'da', 'silva', 'mosafi'];
+            //arr.forEach((val) => console.log(val));
+
+            //const population = data.message;
+            //for (const key in population) {
+                //console.log(key)
+            //}
+
+            //const population = data.message;
+            //let genders = Object.keys(population);
+            //console.log(genders);
+
+            //const population = data.message;
+            //let genders = Object.values(population);
+            //console.log(genders);
+
+            //const population = data.message;
+            //let genders = Object.values(population);
+            //genders.forEach((gender) => console.log(gender.term +' -> '+ gender.bgcolor));
+
+           /* 
+           function yah(term){
+                const population = data.message;
+                let term = '';
+                let bgcolor = '';
+                let genders = Object.entries(population);
+               
+                for (const [key, value] of genders){
+                    term += value.term+' ';
+                    bgcolor = value.bgcolor;
+                    console.log(bgcolor);
+                } 
+
+                return [term, bgcolor]
+            }
+            */
+
+            /*
+            var term_ = '';
+            var bgcolor_ = '';
+            function yah(my_message){
+
+                if (my_message=='[ACT]'){
+                    console.log('[ACT] - #00FFFF');
+                    term_ = '[ACT] ';
+                    bgcolor_ = 'primary';
+                }
+                else if (my_message=='[AGT]'){
+                    console.log('[AGT] - #F1C40F');
+                    term_ = '[AGT] ';
+                    bgcolor_ = 'secondary';
+                }
+                else if (my_message=='[DRT]'){
+                    console.log('[DRT]');
+                    term_ = '[DRT] ';
+                    bgcolor_ = 'info';
+                }
+                else if (my_message=='[UNT]'){
+                    console.log('UNT - #3498DB');
+                    term_ = '[UNT] ';
+                    bgcolor_ = 'warning';
+                }
+                else{
+                    console.log(my_message);
+                    term_ += my_message+' ';
+                    bgcolor_ = 'transparent';                        
+                }
+                return [term_, bgcolor_]
+            }
+            const [term, bgcolor] = yah('[UNT]')
+            */  
+
+            if (roomName == firstRoom)
+            {
+                document.querySelector('#chat-messages-one').innerHTML += 
+                (
+                    '<div class="row mb-3 pb-0 bg-transparent">'+
+                        '<div class="col-1 bg-transparent pr-1 pt-1 d-flex justify-content-end align-end">'+
+                            '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"'+ 
+                            'class="bi bi-person-circle-fill text-'+userColor+' rounded-circle bg-white" viewBox="0 0 16 16">'+
+                                '<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>'+
+                            '<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>'+
+                        '</svg>'+
+                        '</div>'+
+                        '<div class="col-10 pb-0 pl-1">'+
+                            '<div class="alert alert-light pb-0 mb-0 pt-0 pl-1" role="alert">'+
+                                '<div class="row small pt-1 pl-1" style="font-size: smaller; font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", sans-serif;">'+
+                                    '<div class="col-1 text-'+ userColor +' fw-bold mr-3">'+ data.username.toUpperCase() +'</div>'+
+                                    '<div class="col pl-4 small">['+dateTimeMaisc2+']</div>'+
+                                '</div>'+
+                                '<div class="row pl-1 fw-light small">'+
+                                    '<span>'+ data.message +'</span>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'
+                );                
+            }
+            else
+            {
+                document.querySelector('#chat-messages-two').innerHTML += 
+                (
+                    '<div class="row mb-3 pb-0 bg-transparent">'+
+                        '<div class="col-1 bg-transparent pr-1 pt-1 d-flex justify-content-end align-end">'+
+                            '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"'+ 
+                            'class="bi bi-person-circle-fill text-'+userColor+' rounded-circle bg-white" viewBox="0 0 16 16">'+
+                                '<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>'+
+                            '<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>'+
+                        '</svg>'+
+                        '</div>'+
+                        '<div class="col-10 pb-0 pl-1">'+
+                            '<div class="alert alert-light pb-0 mb-0 pt-0 pl-1" role="alert">'+
+                                '<div class="row small pt-1 pl-1" style="font-size: smaller; font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", sans-serif;">'+
+                                    '<div class="col-1 text-'+ userColor +' fw-bold mr-3">'+ data.username.toUpperCase() +'</div>'+
+                                    '<div class="col pl-4 small">['+dateTimeMaisc2+']</div>'+
+                                '</div>'+
+                                '<div class="row pl-1 fw-light small">'+
+                                    '<span>'+ data.message +'</span>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'
+                );
+            }
+        } 
+        else 
+        {
+            alert('The message was empty!')
+        }
+
+        scrollToBottom();
+    };
+
+    if(roomName == firstRoom)
+    {
+        document.querySelector('#chat-message-input').focus();    
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            e.preventDefault()
+
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+
+            console.log({
+                'message': message,
+                'username': userName,
+                'room': roomName
+            })
+
+            chatSocket.send(JSON.stringify({'message':message,'username':userName,'room':roomName}));
+
+            messageInputDom.value = '';
+
+            return false
+        };
+
+        function scrollToBottom() {
+            let objDiv = document.getElementById("chat-messages-one");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+
+        scrollToBottom();
+    }
+    else
+    {
+        document.querySelector('#chat-message-input-two').focus();    
+        document.querySelector('#chat-message-input-two').onkeyup = function(e) {
+            if (e.keyCode === 13) {
+                document.querySelector('#chat-message-submit-two').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit-two').onclick = function(e) {
+            e.preventDefault()
+
+            const messageInputDom = document.querySelector('#chat-message-input-two');
+            const message = messageInputDom.value;
+
+            console.log({
+                'message': message,
+                'username': userName,
+                'room': roomName
+            })
+
+            chatSocket.send(JSON.stringify({'message':message,'username':userName,'room':roomName}));
+
+            messageInputDom.value = '';
+
+            return false
+        };
+
+        function scrollToBottom() {
+            let objDiv = document.getElementById("chat-messages-two");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+        
+        scrollToBottom();
+    }
+
+</script>
+{% endblock %}

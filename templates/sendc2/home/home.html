@@ -1,0 +1,17 @@
+{% extends 'core/config/base/base.html' %} 
+{% load static %}
+{% block title %} {{ title_page }} {% endblock %}
+
+{% block content %}
+    <div class="row align-items-center alert-light pt-2">
+
+        {% include 'sendc2/output/output.html' %}
+
+        {% include 'microservice/home/home.html' %}
+
+        {% include 'hierarchy/home/home.html' %}
+
+        {% include 'core/config/footer/home/home.html' %}
+    
+    </div>
+{% endblock %}

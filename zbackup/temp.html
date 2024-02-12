@@ -1,0 +1,50 @@
+//let user_message = data.message
+//var my_message = user_message.split(" ");
+//var token_message="";
+//console.log(my_message);
+
+
+function xpto(){
+    for (let i=0; i<my_message.length; i++){
+        if (my_message[i]=='[ACT]'){
+            console.log('[ACT] - #00FFFF');
+            token_message = '[ACT] ';
+            token_color   = 'primary';
+        }
+        else if (my_message[i]=='[AGT]'){
+            console.log('[AGT] - #F1C40F');
+            token_message = '[AGT] ';
+            token_color   = 'secondary';
+        }
+        else if (my_message[i]=='[DRT]'){
+            console.log('[DRT]');
+            token_message = '[DRT] ';
+            token_color   = 'info';
+        }
+        else if (my_message[i]=='[UNT]'){
+            console.log('UNT - #3498DB');
+            token_message += '[UNT] ';
+            token_color   = 'warning';
+        }
+        else{
+            console.log(my_message[i]);
+            token_message += my_message[i]+' ';
+            token_color   = 'whte';                        
+        }
+    }
+    return [token_message, token_color]
+}
+const [mes, col] = xpto()
+
+
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-toggle-on" viewBox="0 0 16 16">
+    <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"/>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16">
+    <path d="M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5"/>
+</svg>
+
+
+'<mark class="bg-'+bgcolor_+'">'+term_+'</mark>' 

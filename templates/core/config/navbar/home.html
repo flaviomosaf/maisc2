@@ -1,0 +1,30 @@
+{% load static %}
+
+<nav class="navbar navbar-dark fixed-top navbar-expand-lg bg-dark border-bottom">
+  <div class="container-fluid pr-3">
+    <a class="navbar-brand me-4" href="/">
+      <img src="#" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse pl-2 pr-1" id="navbarSupportedContent">
+      <!-- START links menu main -->
+      {% include 'core/config/navbar/items.html' %}
+
+      <!-- START input serach crimes -->
+      <!--{% include 'core/config/navbar/search.html' %}-->
+
+      {% if user_current %}
+        <!-- sss -->
+        {% include 'core/config/navbar/privaty.html' %}
+      {% else %}    
+        <!-- ooo -->
+        {% include 'core/config/navbar/login.html' %}
+      {% endif %}
+    </div>
+  </div>
+</nav>
+{% include 'account/login/login.html' %}
+{% include 'account/register/register.html' %}
+{% include 'account/edit/edit.html' %}

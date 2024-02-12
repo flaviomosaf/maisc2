@@ -1,0 +1,68 @@
+{
+    "message": {
+        "entities": {
+            "ents_kind": [],
+            "ents_posi": [],
+            "ents_text": []
+        },
+        "grammar": {
+            "concept": {
+                "lst_adje": [
+                    "bom"
+                ],
+                "lst_adve": [],
+                "lst_conj": [],
+                "lst_det": [],
+                "lst_noun": [
+                    "dia"
+                ],
+                "lst_num": [],
+                "lst_other": [],
+                "lst_pron": [],
+                "lst_punc": [
+                    "?"
+                ],
+                "lst_verb": []
+            },
+            "count": {
+                "tot_adej": "1",
+                "tot_adve": "0",
+                "tot_conj": "0",
+                "tot_det": "0",
+                "tot_noun": "1",
+                "tot_num": "0",
+                "tot_other": "0",
+                "tot_pron": "0",
+                "tot_punc": "1",
+                "tot_verb": "0"
+            }
+        },
+        "main": {
+            "message_raw": "bom dia ?",
+            "message_with_ents": "bom dia ? "
+        },
+        "priority": {
+            "status": true
+        },
+        "properties": {
+            "date": "31/01/2024",
+            "finish_processing": "16.3966254",
+            "host_receiver": "comp-flavio-ferreira",
+            "host_sender": "comp-flavio-ferreira",
+            "ip_receiver": "192.168.91.62",
+            "ip_sender": "192.168.91.62",
+            "start_processing": "13.140934196",
+            "time_processing": "3.25569",
+            "tokens": [
+                "bom",
+                "dia",
+                "?"
+            ],
+            "tokens_len": "3"
+        },
+        "sentence": {
+            "len_sent": 1,
+            "lst_sent": "[bom dia ?]"
+        }
+    }
+}
